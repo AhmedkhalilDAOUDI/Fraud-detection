@@ -7,7 +7,7 @@ import os
 from pathlib import Path
 
 st.set_page_config(
-    page_title="Fraud Detection System",
+    page_title="Fraud Detection",
     page_icon="🛡️",
     layout="wide",
     initial_sidebar_state="collapsed"
@@ -15,193 +15,255 @@ st.set_page_config(
 
 st.markdown("""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Syne:wght@400;600;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;700&display=swap');
 
-* { font-family: 'Syne', sans-serif; }
-code, .mono { font-family: 'JetBrains Mono', monospace; }
-
-.stApp {
-    background: #070B14;
+html, body, [class*="css"] {
+    font-family: 'DM Sans', sans-serif;
+    background-color: #08090c;
+    color: #e8e8e8;
 }
 
-section[data-testid="stSidebar"] {
-    background: #0d1117;
-    border-right: 1px solid #1f2937;
+.stApp { background: #08090c; }
+
+/* Hide streamlit branding */
+#MainMenu, footer, header { visibility: hidden; }
+
+.block-container {
+    padding: 48px 64px;
+    max-width: 1200px;
 }
 
-.header-container {
-    background: linear-gradient(135deg, #070B14 0%, #0d1520 50%, #070B14 100%);
-    border: 1px solid #1a3a5c;
-    border-radius: 16px;
-    padding: 40px;
-    margin-bottom: 32px;
-    position: relative;
-    overflow: hidden;
+/* ── HEADER ── */
+.top-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 48px;
+    border-bottom: 1px solid #1a1a1a;
+    margin-bottom: 48px;
 }
 
-.header-container::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(ellipse at center, rgba(0, 200, 255, 0.03) 0%, transparent 60%);
-}
-
-.header-title {
-    font-family: 'JetBrains Mono', monospace !important;
-    font-size: 2.8rem;
-    font-weight: 700;
+.logo {
+    font-family: 'DM Mono', monospace;
+    font-size: 1.1rem;
+    font-weight: 500;
     color: #ffffff;
-    margin: 0;
-    letter-spacing: -1px;
+    letter-spacing: 2px;
 }
 
-.header-title span { color: #00c8ff; }
+.logo span { color: #3b82f6; }
 
-.header-subtitle {
-    color: #6b7280;
-    font-size: 1rem;
-    margin-top: 8px;
-    font-family: 'JetBrains Mono', monospace;
-}
-
-.metric-pill {
+.status-badge {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    background: #111827;
-    border: 1px solid #1f2937;
+    gap: 6px;
+    background: #0f1a0f;
+    border: 1px solid #166534;
     border-radius: 100px;
-    padding: 8px 16px;
-    margin: 4px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.85rem;
-    color: #9ca3af;
+    padding: 6px 14px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    color: #4ade80;
 }
 
-.metric-pill .value { color: #00c8ff; font-weight: 700; }
+.status-dot {
+    width: 6px;
+    height: 6px;
+    background: #4ade80;
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+}
 
-.section-title {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.75rem;
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+}
+
+/* ── HERO ── */
+.hero-title {
+    font-size: 3.5rem;
     font-weight: 700;
+    color: #ffffff;
+    line-height: 1.1;
+    letter-spacing: -2px;
+    margin: 0;
+}
+
+.hero-title .accent { color: #3b82f6; }
+
+.hero-sub {
+    font-size: 1rem;
+    color: #6b7280;
+    margin-top: 16px;
+    font-weight: 300;
+    line-height: 1.6;
+    max-width: 500px;
+}
+
+/* ── METRICS ROW ── */
+.metrics-row {
+    display: flex;
+    gap: 1px;
+    background: #1a1a1a;
+    border: 1px solid #1a1a1a;
+    border-radius: 12px;
+    overflow: hidden;
+    margin: 48px 0;
+}
+
+.metric-item {
+    flex: 1;
+    background: #0d0d0d;
+    padding: 20px 24px;
+}
+
+.metric-item:hover { background: #111111; }
+
+.metric-name {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    color: #4b5563;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+}
+
+.metric-val {
+    font-family: 'DM Mono', monospace;
+    font-size: 1.6rem;
+    font-weight: 500;
+    color: #ffffff;
+}
+
+.metric-val.blue { color: #3b82f6; }
+.metric-val.green { color: #4ade80; }
+.metric-val.amber { color: #f59e0b; }
+
+/* ── SECTION ── */
+.section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
     color: #4b5563;
     letter-spacing: 3px;
     text-transform: uppercase;
-    margin-bottom: 16px;
-    margin-top: 32px;
+    margin-bottom: 20px;
 }
 
-.input-grid {
-    background: #0d1117;
-    border: 1px solid #1f2937;
+/* ── INPUTS ── */
+div[data-testid="stNumberInput"] label {
+    font-family: 'DM Mono', monospace !important;
+    font-size: 0.75rem !important;
+    color: #6b7280 !important;
+    letter-spacing: 1px !important;
+}
+
+div[data-testid="stNumberInput"] input {
+    background: #0d0d0d !important;
+    color: #e8e8e8 !important;
+    border: 1px solid #1f1f1f !important;
+    border-radius: 6px !important;
+    font-family: 'DM Mono', monospace !important;
+    font-size: 0.85rem !important;
+}
+
+div[data-testid="stNumberInput"] input:focus {
+    border-color: #3b82f6 !important;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1) !important;
+}
+
+/* ── BUTTON ── */
+.stButton > button {
+    background: #3b82f6 !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: 8px !important;
+    font-family: 'DM Sans', sans-serif !important;
+    font-weight: 500 !important;
+    font-size: 0.95rem !important;
+    padding: 14px 32px !important;
+    letter-spacing: 0.5px !important;
+    width: 100% !important;
+    transition: background 0.15s !important;
+}
+
+.stButton > button:hover {
+    background: #2563eb !important;
+}
+
+/* ── RESULT ── */
+.result-fraud {
+    border: 1px solid #991b1b;
+    background: #0c0404;
     border-radius: 12px;
-    padding: 24px;
+    padding: 40px 48px;
 }
 
-.fraud-result {
-    background: linear-gradient(135deg, #1a0000 0%, #2d0000 100%);
-    border: 1px solid #ef4444;
-    border-radius: 16px;
-    padding: 40px;
-    text-align: center;
-    box-shadow: 0 0 60px rgba(239, 68, 68, 0.15), inset 0 0 60px rgba(239, 68, 68, 0.05);
-}
-
-.legit-result {
-    background: linear-gradient(135deg, #001a0d 0%, #002d1a 100%);
-    border: 1px solid #10b981;
-    border-radius: 16px;
-    padding: 40px;
-    text-align: center;
-    box-shadow: 0 0 60px rgba(16, 185, 129, 0.15), inset 0 0 60px rgba(16, 185, 129, 0.05);
-}
-
-.result-label {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 3rem;
-    font-weight: 700;
-    margin: 0;
-    letter-spacing: -2px;
-}
-
-.result-sub {
-    font-size: 0.9rem;
-    margin-top: 8px;
-    opacity: 0.7;
-}
-
-.prob-display {
-    background: #0d1117;
-    border: 1px solid #1f2937;
+.result-legit {
+    border: 1px solid #166534;
+    background: #040c04;
     border-radius: 12px;
-    padding: 24px;
-    text-align: center;
+    padding: 40px 48px;
 }
 
-.prob-value {
-    font-family: 'JetBrains Mono', monospace;
+.result-verdict {
     font-size: 2.5rem;
     font-weight: 700;
-    color: #f59e0b;
+    letter-spacing: -1px;
     margin: 0;
 }
 
-.prob-label {
-    font-size: 0.75rem;
+.result-desc {
+    font-size: 0.9rem;
+    color: #6b7280;
+    margin-top: 8px;
+}
+
+.result-prob {
+    font-family: 'DM Mono', monospace;
+    font-size: 3rem;
+    font-weight: 500;
+    margin: 0;
+}
+
+.result-prob-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
     color: #4b5563;
     letter-spacing: 2px;
     text-transform: uppercase;
     margin-top: 4px;
 }
 
-.example-btn {
-    background: #111827;
-    border: 1px dashed #374151;
-    border-radius: 8px;
-    padding: 12px 24px;
-    color: #6b7280;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.85rem;
-    cursor: pointer;
-    transition: all 0.2s;
+.divider {
+    border: none;
+    border-top: 1px solid #1a1a1a;
+    margin: 40px 0;
 }
 
-div[data-testid="stNumberInput"] input {
-    background: #111827 !important;
-    color: #e5e7eb !important;
-    border: 1px solid #1f2937 !important;
-    border-radius: 6px !important;
-    font-family: 'JetBrains Mono', monospace !important;
-}
-
-div[data-testid="stNumberInput"] input:focus {
-    border-color: #00c8ff !important;
-}
-
-.stButton button {
-    background: linear-gradient(135deg, #0066ff, #00c8ff) !important;
-    color: white !important;
-    border: none !important;
-    border-radius: 8px !important;
-    font-family: 'JetBrains Mono', monospace !important;
-    font-weight: 700 !important;
-    font-size: 1rem !important;
-    padding: 16px !important;
-    letter-spacing: 1px !important;
-    transition: all 0.2s !important;
+/* ── TABS ── */
+.stTabs [data-baseweb="tab-list"] {
+    background: transparent !important;
+    gap: 0 !important;
+    border-bottom: 1px solid #1a1a1a !important;
 }
 
 .stTabs [data-baseweb="tab"] {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.8rem;
-    color: #4b5563;
+    font-family: 'DM Mono', monospace !important;
+    font-size: 0.75rem !important;
+    color: #4b5563 !important;
+    padding: 12px 20px !important;
+    border-bottom: 2px solid transparent !important;
 }
 
 .stTabs [aria-selected="true"] {
-    color: #00c8ff !important;
+    color: #ffffff !important;
+    border-bottom: 2px solid #3b82f6 !important;
+    background: transparent !important;
+}
+
+.stTabs [data-baseweb="tab-panel"] {
+    padding: 24px 0 !important;
+    background: transparent !important;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -220,8 +282,7 @@ FILES = {
 def load_models():
     for path, file_id in FILES.items():
         if not os.path.exists(path):
-            with st.spinner(f"Chargement du modèle..."):
-                gdown.download(f"https://drive.google.com/uc?id={file_id}", path, quiet=True)
+            gdown.download(f"https://drive.google.com/uc?id={file_id}", path, quiet=True)
     model     = joblib.load("models/final_model.joblib")
     scaler    = joblib.load("models/scaler.joblib")
     threshold = joblib.load("models/best_threshold.joblib")
@@ -229,7 +290,6 @@ def load_models():
 
 model, scaler, threshold = load_models()
 
-# ── FRAUD EXAMPLE ─────────────────────────────────────────
 FRAUD_EXAMPLE = {
     'Time': 406.0, 'V1': -2.3122, 'V2': 1.9520, 'V3': -1.6099,
     'V4': 3.9979, 'V5': -0.5222, 'V6': -1.4265, 'V7': -2.5374,
@@ -241,52 +301,72 @@ FRAUD_EXAMPLE = {
     'V28': -0.1433, 'Amount': 0.0
 }
 
-# ── HEADER ────────────────────────────────────────────────
+# ── TOP BAR ───────────────────────────────────────────────
+st.markdown("""
+<div class="top-bar">
+    <span class="logo">FRAUD<span>GUARD</span></span>
+    <span class="status-badge">
+        <span class="status-dot"></span>
+        MODEL ACTIVE
+    </span>
+</div>
+""", unsafe_allow_html=True)
+
+# ── HERO ──────────────────────────────────────────────────
+col_hero, col_action = st.columns([3, 2])
+
+with col_hero:
+    st.markdown("""
+    <p class="hero-title">Detect fraud<br>before it <span class="accent">happens.</span></p>
+    <p class="hero-sub">
+        Real-time transaction scoring powered by Extra Trees Classifier.
+        Trained on 284,807 European card transactions.
+    </p>
+    """, unsafe_allow_html=True)
+
+# ── METRICS ───────────────────────────────────────────────
 st.markdown(f"""
-<div class="header-container">
-    <p class="header-title">🛡️ FRAUD<span>GUARD</span></p>
-    <p class="header-subtitle">// Credit Card Fraud Detection System — Extra Trees Classifier</p>
-    <div style="margin-top: 20px;">
-        <span class="metric-pill">PR-AUC <span class="value">0.8808</span></span>
-        <span class="metric-pill">Recall <span class="value">84.69%</span></span>
-        <span class="metric-pill">Precision <span class="value">93.26%</span></span>
-        <span class="metric-pill">F1 <span class="value">0.8877</span></span>
-        <span class="metric-pill">Threshold <span class="value">{threshold:.4f}</span></span>
+<div class="metrics-row">
+    <div class="metric-item">
+        <div class="metric-name">PR-AUC</div>
+        <div class="metric-val blue">0.8808</div>
+    </div>
+    <div class="metric-item">
+        <div class="metric-name">Precision</div>
+        <div class="metric-val green">93.26%</div>
+    </div>
+    <div class="metric-item">
+        <div class="metric-name">Recall</div>
+        <div class="metric-val green">84.69%</div>
+    </div>
+    <div class="metric-item">
+        <div class="metric-name">F1 Score</div>
+        <div class="metric-val">0.8877</div>
+    </div>
+    <div class="metric-item">
+        <div class="metric-name">Threshold</div>
+        <div class="metric-val amber">{threshold:.4f}</div>
     </div>
 </div>
 """, unsafe_allow_html=True)
 
-# ── LOAD EXAMPLE BUTTON ───────────────────────────────────
-col_btn1, col_btn2 = st.columns([1, 4])
-with col_btn1:
-    load_fraud = st.button("⚠️ Charger exemple fraude", use_container_width=True)
+# ── INPUTS ────────────────────────────────────────────────
+st.markdown('<p class="section-label">Transaction Data</p>', unsafe_allow_html=True)
 
-# ── INPUT SECTION ─────────────────────────────────────────
-st.markdown('<p class="section-title">Transaction Input</p>', unsafe_allow_html=True)
+load_fraud = st.button("Load fraud example →")
 
 col1, col2 = st.columns(2)
 with col1:
-    time_val = st.number_input(
-        "⏱ Time (secondes)",
-        value=float(FRAUD_EXAMPLE['Time']) if load_fraud else 0.0,
-        format="%.2f"
-    )
+    time_val = st.number_input("TIME", value=float(FRAUD_EXAMPLE['Time']) if load_fraud else 0.0, format="%.2f")
 with col2:
-    amount_val = st.number_input(
-        "💰 Amount (€)",
-        value=float(FRAUD_EXAMPLE['Amount']) if load_fraud else 0.0,
-        min_value=0.0, format="%.2f"
-    )
+    amount_val = st.number_input("AMOUNT (€)", value=float(FRAUD_EXAMPLE['Amount']) if load_fraud else 0.0, min_value=0.0, format="%.2f")
 
-st.markdown('<p class="section-title">PCA Components — V1 to V28</p>', unsafe_allow_html=True)
+st.markdown('<p class="section-label" style="margin-top:24px;">PCA Components</p>', unsafe_allow_html=True)
 
-# Tabs pour organiser V1-V28
 tab1, tab2, tab3, tab4 = st.tabs(["V1 — V7", "V8 — V14", "V15 — V21", "V22 — V28"])
 
 v_values = {}
-ranges = [(1,8), (8,15), (15,22), (22,29)]
-
-for tab, (start, end) in zip([tab1, tab2, tab3, tab4], ranges):
+for tab, (start, end) in zip([tab1, tab2, tab3, tab4], [(1,8),(8,15),(15,22),(22,29)]):
     with tab:
         cols = st.columns(7)
         for i, col in zip(range(start, end), cols):
@@ -294,63 +374,49 @@ for tab, (start, end) in zip([tab1, tab2, tab3, tab4], ranges):
                 v_values[f'V{i}'] = st.number_input(
                     f"V{i}",
                     value=float(FRAUD_EXAMPLE[f'V{i}']) if load_fraud else 0.0,
-                    format="%.4f",
-                    key=f"v{i}"
+                    format="%.4f", key=f"v{i}"
                 )
 
-# ── ANALYZE BUTTON ────────────────────────────────────────
-st.markdown("")
-analyze = st.button("🔍 ANALYSER LA TRANSACTION", use_container_width=True)
+st.markdown('<hr class="divider">', unsafe_allow_html=True)
 
-# ── PREDICTION ────────────────────────────────────────────
+analyze = st.button("Analyze Transaction")
+
+# ── RESULT ────────────────────────────────────────────────
 if analyze:
-    features = {
-        'Time': time_val,
-        **{f'V{i}': v_values[f'V{i}'] for i in range(1, 29)},
-        'Amount': amount_val
-    }
+    features = {'Time': time_val, **{f'V{i}': v_values[f'V{i}'] for i in range(1, 29)}, 'Amount': amount_val}
     input_df = pd.DataFrame([features])
-
     input_scaled = input_df.copy()
     input_scaled[['Time', 'Amount']] = scaler.transform(input_df[['Time', 'Amount']])
-
     proba = model.predict_proba(input_scaled)[0][1]
     prediction = int(proba >= threshold)
 
-    st.markdown('<p class="section-title">Résultat de l\'analyse</p>', unsafe_allow_html=True)
+    st.markdown('<p class="section-label" style="margin-top:32px;">Analysis Result</p>', unsafe_allow_html=True)
 
-    col_res, col_prob, col_thresh = st.columns([2, 1, 1])
+    col_verdict, col_prob = st.columns([3, 1])
 
-    with col_res:
+    with col_verdict:
         if prediction == 1:
             st.markdown(f"""
-            <div class="fraud-result">
-                <p class="result-label" style="color: #ef4444;">⚠ FRAUDE</p>
-                <p class="result-sub" style="color: #fca5a5;">Transaction suspecte détectée</p>
+            <div class="result-fraud">
+                <p class="result-verdict" style="color:#ef4444;">⚠ Fraudulent Transaction</p>
+                <p class="result-desc">This transaction has been flagged as suspicious. Confidence: {proba:.2%}</p>
             </div>""", unsafe_allow_html=True)
         else:
             st.markdown(f"""
-            <div class="legit-result">
-                <p class="result-label" style="color: #10b981;">✓ LÉGITIME</p>
-                <p class="result-sub" style="color: #6ee7b7;">Transaction autorisée</p>
+            <div class="result-legit">
+                <p class="result-verdict" style="color:#4ade80;">✓ Legitimate Transaction</p>
+                <p class="result-desc">This transaction appears safe. Confidence: {1-proba:.2%}</p>
             </div>""", unsafe_allow_html=True)
 
     with col_prob:
+        color = "#ef4444" if prediction == 1 else "#4ade80"
         st.markdown(f"""
-        <div class="prob-display">
-            <p class="prob-value">{proba:.2%}</p>
-            <p class="prob-label">Probabilité fraude</p>
+        <div style="text-align:center; padding: 40px 0;">
+            <p class="result-prob" style="color:{color};">{proba:.1%}</p>
+            <p class="result-prob-label">Fraud probability</p>
         </div>""", unsafe_allow_html=True)
 
-    with col_thresh:
-        st.markdown(f"""
-        <div class="prob-display">
-            <p class="prob-value" style="color: #8b5cf6;">{threshold:.4f}</p>
-            <p class="prob-label">Threshold</p>
-        </div>""", unsafe_allow_html=True)
-
-    st.markdown("")
     st.progress(float(proba))
 
-    st.markdown('<p class="section-title">Données saisies</p>', unsafe_allow_html=True)
-    st.dataframe(input_df.style.format("{:.4f}"), use_container_width=True)
+    with st.expander("View input data"):
+        st.dataframe(input_df.style.format("{:.4f}"), use_container_width=True)
