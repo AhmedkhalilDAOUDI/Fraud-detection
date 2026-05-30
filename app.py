@@ -313,18 +313,13 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ── HERO ──────────────────────────────────────────────────
-with col_hero:
-    st.markdown("""
-    <p class="hero-title">
-        Détectez la fraude <span class="accent">avant qu'elle ne se produise.</span>
-    </p>
-
-    <p class="hero-sub">
-        Real-time transaction scoring powered by Extra Trees Classifier.
-        <br>
-        Trained on 284,807 European card transactions.
-    </p>
-    """, unsafe_allow_html=True)
+st.markdown("""
+<p class="hero-title">Détectez la fraude<br>avant qu'elle <span class="accent">ne se produise.</span></p>
+<p class="hero-sub">
+    Scoring de transactions en temps réel — Extra Trees Classifier.<br>
+    Entraîné sur 284 807 transactions européennes.
+</p>
+""", unsafe_allow_html=True)
 
 # ── METRICS ───────────────────────────────────────────────
 st.markdown(f"""
