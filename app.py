@@ -313,13 +313,16 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ── HERO ──────────────────────────────────────────────────
-col_hero, col_action = st.columns([3, 2])
-
 with col_hero:
     st.markdown("""
-    <p class="hero-title">Detect fraud<br>before it <span class="accent">happens.</span></p>
+    <p class="hero-title">
+        Détectez la fraude <span class="accent">avant qu'elle ne se produise.</span>
+    </p>
+
     <p class="hero-sub">
-        Real-time transaction scoring powered by Extra Trees Classifier. Trained on 284,807 European card transactions.
+        Real-time transaction scoring powered by Extra Trees Classifier.
+        <br>
+        Trained on 284,807 European card transactions.
     </p>
     """, unsafe_allow_html=True)
 
