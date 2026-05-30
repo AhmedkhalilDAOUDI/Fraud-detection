@@ -81,7 +81,7 @@ html, body, [class*="css"] {
 
 /* ── HERO ── */
 .hero-title {
-    font-size: 3.5rem;
+    font-size: 1rem;
     font-weight: 700;
     color: #ffffff;
     line-height: 1.1;
