@@ -304,7 +304,7 @@ FRAUD_EXAMPLE = {
 # ── TOP BAR ───────────────────────────────────────────────
 st.markdown("""
 <div class="top-bar">
-    <span class="logo">FRAUD<span>GUARD</span></span>
+    <span class="logo">FRAUD<span>DETECTION</span></span>
     <span class="status-badge">
         <span class="status-dot"></span>
         MODEL ACTIVE
@@ -319,8 +319,7 @@ with col_hero:
     st.markdown("""
     <p class="hero-title">Detect fraud<br>before it <span class="accent">happens.</span></p>
     <p class="hero-sub">
-        Real-time transaction scoring powered by Extra Trees Classifier.
-        Trained on 284,807 European card transactions.
+        Real-time transaction scoring powered by Extra Trees Classifier. Trained on 284,807 European card transactions.
     </p>
     """, unsafe_allow_html=True)
 
