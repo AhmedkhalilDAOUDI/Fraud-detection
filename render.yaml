@@ -1,7 +1,6 @@
 services:
   - type: web
     name: fraudguard-flask
-    env: python
+    runtime: python
     buildCommand: pip install -r requirements.txt
-    startCommand: gunicorn app:app
-    rootDir: flask_app
+    startCommand: gunicorn flask_app.app:app --bind 0.0.0.0:$PORT

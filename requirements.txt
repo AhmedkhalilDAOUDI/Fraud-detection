@@ -1,13 +1,7 @@
-streamlit
+flask
+gunicorn
 scikit-learn
 pandas
 numpy
 joblib
-matplotlib
-seaborn
-imbalanced-learn
-xgboost
-lightgbm
-catboost
 gdown
-gunicorn

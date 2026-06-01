@@ -1,1 +1,7 @@
+gunicornflask
 gunicorn
+scikit-learn
+pandas
+numpy
+joblib
+gdown
