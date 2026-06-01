@@ -8,14 +8,17 @@ from pathlib import Path
 
 app = Flask(__name__)
 
-# ── LOAD MODELS ───────────────────────────────────────────
-MODEL_DIR = Path("models")
+# ── DYNAMIC ABSOLUTE PATHS FOR MODELS ─────────────────────
+# This finds exactly where app.py lives, and creates a "models" folder right next to it.
+BASE_DIR = Path(__file__).resolve().parent
+MODEL_DIR = BASE_DIR / "models"
 MODEL_DIR.mkdir(exist_ok=True)
 
+# Map the exact file paths to their Google Drive IDs
 FILES = {
-    "models/final_model.joblib":    "1axYmDQ0i6_qNBKOcV2rz169gGJDYloOF",
-    "models/scaler.joblib":         "1jz20q91NGwtobMoh99tO8XmxczuPyG8F",
-    "models/best_threshold.joblib": "1Ni1zKQwOVjCdNIMPHWFePXe5cP2-EBbN",
+    str(MODEL_DIR / "final_model.joblib"):    "1axYmDQ0i6_qNBKOcV2rz169gGJDYloOF",
+    str(MODEL_DIR / "scaler.joblib"):         "1jz20q91NGwtobMoh99tO8XmxczuPyG8F",
+    str(MODEL_DIR / "best_threshold.joblib"): "1Ni1zKQwOVjCdNIMPHWFePXe5cP2-EBbN",
 }
 
 def load_models():
@@ -23,9 +26,11 @@ def load_models():
         if not os.path.exists(path):
             print(f"Downloading {path}...")
             gdown.download(f"https://drive.google.com/uc?id={file_id}", path, quiet=False)
-    model     = joblib.load("models/final_model.joblib")
-    scaler    = joblib.load("models/scaler.joblib")
-    threshold = joblib.load("models/best_threshold.joblib")
+            
+    # Load using the exact absolute paths
+    model     = joblib.load(str(MODEL_DIR / "final_model.joblib"))
+    scaler    = joblib.load(str(MODEL_DIR / "scaler.joblib"))
+    threshold = joblib.load(str(MODEL_DIR / "best_threshold.joblib"))
     return model, scaler, threshold
 
 model, scaler, threshold = load_models()
