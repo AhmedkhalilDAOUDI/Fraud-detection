@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FraudGuard</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: #08090c;
+            color: #e8e8e8;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 48px 32px;
+        }
+
+        /* TOP BAR */
+        .top-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-bottom: 48px;
+            border-bottom: 1px solid #1a1a1a;
+            margin-bottom: 48px;
+        }
+
+        .logo {
+            font-family: 'DM Mono', monospace;
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: #ffffff;
+            letter-spacing: 2px;
+        }
+
+        .logo span { color: #3b82f6; }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #0f1a0f;
+            border: 1px solid #166534;
+            border-radius: 100px;
+            padding: 6px 14px;
+            font-family: 'DM Mono', monospace;
+            font-size: 0.75rem;
+            color: #4ade80;
+        }
+
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            background: #4ade80;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        /* HERO */
+        .hero-title {
+            font-size: 4rem;
+            font-weight: 700;
+            color: #ffffff;
+            line-height: 1.1;
+            letter-spacing: -2px;
+        }
+
+        .hero-title .accent { color: #3b82f6; }
+
+        .hero-sub {
+            font-size: 1rem;
+            color: #6b7280;
+            margin-top: 16px;
+            font-weight: 300;
+            line-height: 1.6;
+            max-width: 500px;
+        }
+
+        /* METRICS */
+        .metrics-row {
+            display: flex;
+            gap: 1px;
+            background: #1a1a1a;
+            border: 1px solid #1a1a1a;
+            border-radius: 12px;
+            overflow: hidden;
+            margin: 48px 0;
+        }
+
+        .metric-item {
+            flex: 1;
+            background: #0d0d0d;
+            padding: 20px 24px;
+            transition: background 0.15s;
+        }
+
+        .metric-item:hover { background: #111111; }
+
+        .metric-name {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.7rem;
+            color: #4b5563;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .metric-val {
+            font-family: 'DM Mono', monospace;
+            font-size: 1.6rem;
+            font-weight: 500;
+            color: #ffffff;
+        }
+
+        .metric-val.blue { color: #3b82f6; }
+        .metric-val.green { color: #4ade80; }
+        .metric-val.amber { color: #f59e0b; }
+
+        /* SECTION */
+        .section-label {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.7rem;
+            color: #4b5563;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            margin-top: 32px;
+        }
+
+        /* FORM */
+        .input-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .pca-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .form-group label {
+            display: block;
+            font-family: 'DM Mono', monospace;
+            font-size: 0.7rem;
+            color: #6b7280;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+
+        .form-group input {
+            width: 100%;
+            background: #0d0d0d;
+            color: #e8e8e8;
+            border: 1px solid #1f1f1f;
+            border-radius: 6px;
+            padding: 10px 12px;
+            font-family: 'DM Mono', monospace;
+            font-size: 0.85rem;
+            outline: none;
+            transition: border-color 0.15s;
+        }
+
+        .form-group input:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+        }
+
+        .tabs {
+            display: flex;
+            gap: 0;
+            border-bottom: 1px solid #1a1a1a;
+            margin-bottom: 24px;
+        }
+
+        .tab {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.75rem;
+            color: #4b5563;
+            padding: 12px 20px;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.15s;
+        }
+
+        .tab.active {
+            color: #ffffff;
+            border-bottom: 2px solid #3b82f6;
+        }
+
+        .tab-content { display: none; }
+        .tab-content.active { display: grid; grid-template-columns: repeat(7, 1fr); gap: 12px; }
+
+        .divider {
+            border: none;
+            border-top: 1px solid #1a1a1a;
+            margin: 32px 0;
+        }
+
+        .btn-row {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 32px;
+        }
+
+        .btn-primary {
+            flex: 1;
+            background: #3b82f6;
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 500;
+            font-size: 0.95rem;
+            padding: 14px 32px;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+
+        .btn-primary:hover { background: #2563eb; }
+
+        .btn-secondary {
+            background: #0d0d0d;
+            color: #6b7280;
+            border: 1px solid #1f1f1f;
+            border-radius: 8px;
+            font-family: 'DM Mono', monospace;
+            font-size: 0.8rem;
+            padding: 14px 24px;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .btn-secondary:hover { border-color: #3b82f6; color: #ffffff; }
+
+        /* RESULT */
+        .result { display: none; margin-top: 32px; }
+        .result.show { display: block; }
+
+        .result-fraud {
+            border: 1px solid #991b1b;
+            background: #0c0404;
+            border-radius: 12px;
+            padding: 40px 48px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .result-legit {
+            border: 1px solid #166534;
+            background: #040c04;
+            border-radius: 12px;
+            padding: 40px 48px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .result-verdict {
+            font-size: 2.5rem;
+            font-weight: 700;
+            letter-spacing: -1px;
+        }
+
+        .result-desc {
+            font-size: 0.9rem;
+            color: #6b7280;
+            margin-top: 8px;
+        }
+
+        .result-prob {
+            font-family: 'DM Mono', monospace;
+            font-size: 3rem;
+            font-weight: 500;
+            text-align: right;
+        }
+
+        .result-prob-label {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.7rem;
+            color: #4b5563;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-align: right;
+            margin-top: 4px;
+        }
+
+        .progress-bar {
+            height: 4px;
+            background: #1a1a1a;
+            border-radius: 2px;
+            margin-top: 16px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            border-radius: 2px;
+            transition: width 0.5s ease;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 32px;
+            font-family: 'DM Mono', monospace;
+            font-size: 0.85rem;
+            color: #4b5563;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <!-- TOP BAR -->
+    <div class="top-bar">
+        <span class="logo">FRAUD<span>GUARD</span></span>
+        <span class="status-badge">
+            <span class="status-dot"></span>
+            MODEL ACTIVE
+        </span>
+    </div>
+
+    <!-- HERO -->
+    <p class="hero-title">Détectez la fraude<br>avant qu'elle <span class="accent">ne se produise.</span></p>
+    <p class="hero-sub">
+        Scoring de transactions en temps réel — Extra Trees Classifier.<br>
+        Entraîné sur 284 807 transactions européennes.
+    </p>
+
+    <!-- METRICS -->
+    <div class="metrics-row">
+        <div class="metric-item">
+            <div class="metric-name">PR-AUC</div>
+            <div class="metric-val blue">0.8808</div>
+        </div>
+        <div class="metric-item">
+            <div class="metric-name">Precision</div>
+            <div class="metric-val green">93.26%</div>
+        </div>
+        <div class="metric-item">
+            <div class="metric-name">Recall</div>
+            <div class="metric-val green">84.69%</div>
+        </div>
+        <div class="metric-item">
+            <div class="metric-name">F1 Score</div>
+            <div class="metric-val">0.8877</div>
+        </div>
+        <div class="metric-item">
+            <div class="metric-name">Threshold</div>
+            <div class="metric-val amber">{{ threshold }}</div>
+        </div>
+    </div>
+
+    <!-- FORM -->
+    <p class="section-label">Transaction Data</p>
+
+    <div class="input-grid">
+        <div class="form-group">
+            <label>Time (secondes)</label>
+            <input type="number" id="time" value="0" step="any">
+        </div>
+        <div class="form-group">
+            <label>Amount (€)</label>
+            <input type="number" id="amount" value="0" step="any" min="0">
+        </div>
+    </div>
+
+    <p class="section-label">PCA Components</p>
+
+    <div class="tabs">
+        <div class="tab active" onclick="switchTab(0)">V1 — V7</div>
+        <div class="tab" onclick="switchTab(1)">V8 — V14</div>
+        <div class="tab" onclick="switchTab(2)">V15 — V21</div>
+        <div class="tab" onclick="switchTab(3)">V22 — V28</div>
+    </div>
+
+    <div id="tab-0" class="tab-content active">
+        {% for i in range(1, 8) %}
+        <div class="form-group">
+            <label>V{{ i }}</label>
+            <input type="number" id="v{{ i }}" value="0" step="any">
+        </div>
+        {% endfor %}
+    </div>
+
+    <div id="tab-1" class="tab-content">
+        {% for i in range(8, 15) %}
+        <div class="form-group">
+            <label>V{{ i }}</label>
+            <input type="number" id="v{{ i }}" value="0" step="any">
+        </div>
+        {% endfor %}
+    </div>
+
+    <div id="tab-2" class="tab-content">
+        {% for i in range(15, 22) %}
+        <div class="form-group">
+            <label>V{{ i }}</label>
+            <input type="number" id="v{{ i }}" value="0" step="any">
+        </div>
+        {% endfor %}
+    </div>
+
+    <div id="tab-3" class="tab-content">
+        {% for i in range(22, 29) %}
+        <div class="form-group">
+            <label>V{{ i }}</label>
+            <input type="number" id="v{{ i }}" value="0" step="any">
+        </div>
+        {% endfor %}
+    </div>
+
+    <hr class="divider">
+
+    <div class="btn-row">
+        <button class="btn-primary" onclick="analyze()">Analyser la Transaction</button>
+        <button class="btn-secondary" onclick="loadFraudExample()">⚠ Charger exemple fraude</button>
+    </div>
+
+    <div class="loading" id="loading">Analyse en cours...</div>
+
+    <div class="result" id="result"></div>
+
+</div>
+
+<script>
+    const FRAUD_EXAMPLE = {
+        time: 406.0, amount: 0.0,
+        v1: -2.3122, v2: 1.9520, v3: -1.6099, v4: 3.9979,
+        v5: -0.5222, v6: -1.4265, v7: -2.5374, v8: 1.3917,
+        v9: -2.7701, v10: -2.7723, v11: 3.2020, v12: -2.8999,
+        v13: -0.5952, v14: -4.2893, v15: 0.3897, v16: -1.1407,
+        v17: -2.8301, v18: -0.0168, v19: 0.4170, v20: 0.1269,
+        v21: 0.5172, v22: -0.0350, v23: -0.4652, v24: 0.3202,
+        v25: 0.0, v26: 0.0, v27: 0.2611, v28: -0.1433
+    };
+
+    function switchTab(idx) {
+        document.querySelectorAll('.tab').forEach((t, i) => {
+            t.classList.toggle('active', i === idx);
+        });
+        document.querySelectorAll('.tab-content').forEach((c, i) => {
+            c.classList.toggle('active', i === idx);
+        });
+    }
+
+    function loadFraudExample() {
+        document.getElementById('time').value = FRAUD_EXAMPLE.time;
+        document.getElementById('amount').value = FRAUD_EXAMPLE.amount;
+        for (let i = 1; i <= 28; i++) {
+            document.getElementById(`v${i}`).value = FRAUD_EXAMPLE[`v${i}`];
+        }
+    }
+
+    function analyze() {
+        const data = {
+            Time: parseFloat(document.getElementById('time').value) || 0,
+            Amount: parseFloat(document.getElementById('amount').value) || 0,
+        };
+        for (let i = 1; i <= 28; i++) {
+            data[`V${i}`] = parseFloat(document.getElementById(`v${i}`).value) || 0;
+        }
+
+        document.getElementById('loading').style.display = 'block';
+        document.getElementById('result').classList.remove('show');
+
+        fetch('/predict', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        })
+        .then(r => r.json())
+        .then(res => {
+            document.getElementById('loading').style.display = 'none';
+            const pct = Math.round(res.probability * 100);
+            const isFraud = res.prediction === 1;
+            const color = isFraud ? '#ef4444' : '#4ade80';
+            const fillColor = isFraud ? '#ef4444' : '#4ade80';
+
+            document.getElementById('result').innerHTML = `
+                <div class="${isFraud ? 'result-fraud' : 'result-legit'}">
+                    <div>
+                        <p class="result-verdict" style="color:${color};">
+                            ${isFraud ? '⚠ Fraudulent Transaction' : '✓ Legitimate Transaction'}
+                        </p>
+                        <p class="result-desc">
+                            ${isFraud
+                                ? 'Cette transaction a été identifiée comme suspecte.'
+                                : 'Cette transaction semble sécurisée.'}
+                        </p>
+                    </div>
+                    <div>
+                        <p class="result-prob" style="color:${color};">${pct}%</p>
+                        <p class="result-prob-label">Fraud probability</p>
+                    </div>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width:${pct}%; background:${fillColor};"></div>
+                </div>
+            `;
+            document.getElementById('result').classList.add('show');
+        })
+        .catch(err => {
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('result').innerHTML = `<p style="color:#ef4444;">Erreur : ${err}</p>`;
+            document.getElementById('result').classList.add('show');
+        });
+    }
+</script>
+</body>
+</html>
