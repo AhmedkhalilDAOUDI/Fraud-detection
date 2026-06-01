@@ -4,7 +4,8 @@ Détection automatique de transactions bancaires frauduleuses par apprentissage 
 
 ## 🚀 Application déployée
 
-**[fraud-detection-khalil.streamlit.app](https://fraud-detection-khalil.streamlit.app/)**
+**Streamlit: [fraud-detection-khalil.streamlit.app](https://fraud-detection-khalil.streamlit.app/)**
+**Render: https://fraud-detection-2zh6.onrender.com**
 
 ## 📋 Description du projet
 
